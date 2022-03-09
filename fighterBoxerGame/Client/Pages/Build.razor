@@ -1,0 +1,30 @@
+﻿@page "/build"
+@inject IBananaService BananaService;
+@inject IUnitService UnitService;
+
+<h3>build</h3>
+
+
+<div class="form-group">
+    <select @bind="selectedUnitId" class="form-control">
+        @foreach (var unit in UnitService.Units)
+        {
+            <option value="@unit.Id">@unit.Title // @unit.BananaCost Bananas</option>
+        }
+    </select>
+</div>
+<div class="form-group py-3">
+    <button @onclick="BuiltUnit" class="btn btn-primary">Build</button>
+</div>
+
+
+@code {
+    int selectedUnitId = 1;
+
+    public void BuiltUnit()
+    {
+        var selectedUnit = UnitService.Units.FirstOrDefault(unit => unit.Id == selectedUnitId);
+        BananaService.EatBananas(selectedUnit.BananaCost);
+        UnitService.AddUnit(selectedUnitId);
+    }
+}
